@@ -245,9 +245,10 @@ export default {
 
       if (this.imgstyle.includes(this.placeholderr[imagename].split('.').pop())) {
         // 开始压缩图片
-        imageConversion.compress(files[0], 0.6).then(res => {
-          this.updata.append(imagename,res)
-        })
+        // imageConversion.compress(files[0], 0.6).then(res => {
+        //   this.updata.append("images",res)
+        // })
+        this.updata.append("images[]",files[0])
       } else {
         this.placeholderr[imagename] = '请选择文件'
         alert('文件格式不正确')
@@ -255,7 +256,24 @@ export default {
     },
     upload(){
       if(this.username !='' && this.province!='' && this.city!='' && this.county!='' && this.street!=''){
+        this.updata.append('username',this.username)
+        this.updata.append('province',this.province)
+        this.updata.append('city',this.city)
+        this.updata.append('county',this.county)
+        this.updata.append('street',this.street)
 
+        let myAxios = new axios.create({
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          transformRequest: [ function (data){
+            return data;
+          }]
+        })
+
+        myAxios.post("/api/uploadstore",this.updata).then(res => {
+          console.log(res.data);
+        })
       }else{
         alert("请重新填写")
       }
@@ -274,10 +292,10 @@ export default {
     })
 
     myAxios.get('/api/islogin').then(res => {
-      if(res.data != true){
-        alert(res.data)
+      if(res.data == '请重新登陆'){
         this.islogin = false
       }else{
+        this.username = res.data
         this.islogin = true
       }
     })
