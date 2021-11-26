@@ -15,14 +15,25 @@
             <div class="control">
               <input class="input" type="password" placeholder="********" v-model="password">
             </div>
+
           </div>
 
         </form>
-        <button class="button is-primary" v-on:click="dologin">登陆</button>
+
+          <button class="button is-primary" v-on:click="dologin">登陆</button>
+
+
       </div>
 
       <div class="column">
         <div v-if="islogin" class="content column is-6 is-offset-3">
+
+          <div class="field">
+            <label class="label">商店名字</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="商店名字" v-model="storename">
+            </div>
+          </div>
 
           <div class="field">
             <label class="label">省份</label>
@@ -49,6 +60,13 @@
             <label class="label">街道/乡镇</label>
             <div class="control">
               <input class="input" type="text" placeholder="街道/乡镇" v-model="street">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">优惠信息</label>
+            <div class="control">
+              <textarea class="textarea is-info" placeholder="优惠信息" v-model="disdetail"></textarea>
             </div>
           </div>
 
@@ -193,6 +211,8 @@ export default {
       city:'',
       county:'',
       street:'',
+      storename:'',
+      disdetail:'',
 
       updata: new FormData(),
 
@@ -254,31 +274,35 @@ export default {
         alert('文件格式不正确')
       }
     },
-    upload(){
-      if(this.username !='' && this.province!='' && this.city!='' && this.county!='' && this.street!=''){
-        this.updata.append('username',this.username)
-        this.updata.append('province',this.province)
-        this.updata.append('city',this.city)
-        this.updata.append('county',this.county)
-        this.updata.append('street',this.street)
+    upload() {
+      if (this.username != '' && this.province != '' && this.city != '' && this.street != '' && this.storename != '' && this.disdetail != '') {
+        this.updata.append('username', this.username)
+        this.updata.append('storename', this.storename)
+        this.updata.append('province', this.province)
+        this.updata.append('city', this.city)
+        this.updata.append('county', this.county)
+        this.updata.append('street', this.street)
+        this.updata.append('disdetail', this.disdetail)
 
         let myAxios = new axios.create({
           headers: {
             'Content-Type': 'multipart/form-data'
           },
-          transformRequest: [ function (data){
+          transformRequest: [function (data) {
             return data;
           }]
         })
 
-        myAxios.post("/api/uploadstore",this.updata).then(res => {
-          console.log(res.data);
+        myAxios.post("/api/uploadstore", this.updata).then(res => {
+
+          if (res.data != "请重新登陆") {
+            console.log("上传成功")
+          } else {
+            alert("请重新登陆")
+          }
         })
-      }else{
-        alert("请重新填写")
       }
     }
-
   },
   created(){
     let myAxios = new axios.create({
