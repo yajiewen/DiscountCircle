@@ -297,8 +297,11 @@ export default {
 
           if (res.data != "请重新登陆") {
             console.log("上传成功")
-          } else {
+            location.reload()
+          } else if(res.data == "请重新登陆"){
             alert("请重新登陆")
+            location.reload()
+            this.islogin = false
           }
         })
       }
