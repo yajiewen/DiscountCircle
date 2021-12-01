@@ -275,7 +275,7 @@ export default {
       }
     },
     upload() {
-      if (this.username != '' && this.province != '' && this.city != '' && this.street != '' && this.storename != '' && this.disdetail != '') {
+      if (this.username != '' && this.province != '' &&  this.street != '' && this.storename != '' && this.disdetail != '') {
         this.updata.append('username', this.username)
         this.updata.append('storename', this.storename)
         this.updata.append('province', this.province)
