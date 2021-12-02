@@ -6,14 +6,14 @@
           <div class="field">
             <label class="label">用户名</label>
             <div class="control">
-              <input class="input" type="text" placeholder="用户名" v-model="username">
+              <input class="input" type="text" placeholder="用户名" v-model="username" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" maxlength="20">
             </div>
           </div>
 
           <div class="field">
             <label class="label">密码</label>
             <div class="control">
-              <input class="input" type="password" placeholder="********" v-model="password">
+              <input class="input" type="password" placeholder="********" v-model="password" maxlength="20">
             </div>
 
           </div>
@@ -31,45 +31,44 @@
           <div class="field">
             <label class="label">商店名字</label>
             <div class="control">
-              <input class="input" type="text" placeholder="商店名字" v-model="storename">
+              <input class="input" type="text" placeholder="商店名字" v-model="storename" maxlength="100">
             </div>
           </div>
 
           <div class="field">
             <label class="label">省份</label>
             <div class="control">
-              <input class="input" type="text" placeholder="省份" v-model="province">
+              <input class="input" type="text" placeholder="省份" v-model="province" maxlength="30">
             </div>
           </div>
 
           <div class="field">
             <label class="label">市/州</label>
             <div class="control">
-              <input class="input" type="text" placeholder="市/州" v-model="city">
+              <input class="input" type="text" placeholder="市/州" v-model="city" maxlength="30">
             </div>
           </div>
 
           <div class="field">
             <label class="label">县</label>
             <div class="control">
-              <input class="input" type="text" placeholder="县" v-model="county">
+              <input class="input" type="text" placeholder="县" v-model="county" maxlength="30">
             </div>
           </div>
 
           <div class="field">
             <label class="label">街道/乡镇</label>
             <div class="control">
-              <input class="input" type="text" placeholder="街道/乡镇" v-model="street">
+              <input class="input" type="text" placeholder="街道/乡镇" v-model="street" maxlength="30">
             </div>
           </div>
 
           <div class="field">
             <label class="label">优惠信息</label>
             <div class="control">
-              <textarea class="textarea is-info" placeholder="优惠信息" v-model="disdetail"></textarea>
+              <textarea class="textarea is-info" placeholder="优惠信息" v-model="disdetail" maxlength="200"></textarea>
             </div>
           </div>
-
 
           <div class="columns ">
             <div class="column">
@@ -185,13 +184,13 @@
                 </label>
               </div>
             </div>
-
           </div>
           <button class="button is-primary" v-on:click="upload">上传</button>
         </div>
       </div>
 
     </div>
+
   </div>
 </template>
 
@@ -217,6 +216,8 @@ export default {
       updata: new FormData(),
 
       publicKey: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5g5lPtRiiQX6U65RhOv7aipy7kMZQN0cQTim5HlzK7IApdLZIoPXozmhLHcdvcbOkw2nDJnuyYtWtY82rt3bkyOXylTrk6QrcMGZfPoil/T2s51NkFZYDIYUrJ+1Sz2/DyhIWxiIwMCPTUaRK83Bp0WAsdxIgmN0cR7C9gdwqvQIDAQAB',
+      imageFileNameList:[],
+
       placeholderr: {
         img1: '选择文件',
         img2: '选择文件',
@@ -264,10 +265,6 @@ export default {
       this.placeholderr[imagename] = files[0].name //获取文件名字
 
       if (this.imgstyle.includes(this.placeholderr[imagename].split('.').pop())) {
-        // 开始压缩图片
-        // imageConversion.compress(files[0], 0.6).then(res => {
-        //   this.updata.append("images",res)
-        // })
         this.updata.append("images[]",files[0])
       } else {
         this.placeholderr[imagename] = '请选择文件'
@@ -296,7 +293,7 @@ export default {
         myAxios.post("/api/uploadstore", this.updata).then(res => {
 
           if (res.data != "请重新登陆") {
-            console.log("上传成功")
+            alert("上传成功")
             location.reload()
           } else if(res.data == "请重新登陆"){
             alert("请重新登陆")
