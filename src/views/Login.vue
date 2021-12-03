@@ -29,14 +29,14 @@
         <div v-if="islogin" class="content column is-6 is-offset-3">
 
           <div class="field">
-            <label class="label">商店名字</label>
+            <label class="label">商店名字(必填)</label>
             <div class="control">
               <input class="input" type="text" placeholder="商店名字" v-model="storename" maxlength="100">
             </div>
           </div>
 
           <div class="field">
-            <label class="label">省份</label>
+            <label class="label">省份(必填)</label>
             <div class="control">
               <input class="input" type="text" placeholder="省份" v-model="province" maxlength="30">
             </div>
@@ -57,7 +57,7 @@
           </div>
 
           <div class="field">
-            <label class="label">街道/乡镇</label>
+            <label class="label">街道/乡镇(必填)</label>
             <div class="control">
               <input class="input" type="text" placeholder="街道/乡镇" v-model="street" maxlength="30">
             </div>
@@ -185,7 +185,7 @@
               </div>
             </div>
           </div>
-          <button class="button is-primary" v-on:click="upload">上传</button>
+          <button :class="{'is-loading':isloading}" class="button is-primary" v-on:click="upload">上传</button>
         </div>
       </div>
 
@@ -227,6 +227,8 @@ export default {
         img6: '选择文件'
       },
       imgstyle: ['jpg', 'jpeg', 'png',], //可上传的图片格式
+      isloading:false,
+
     }
   },
   methods:{
@@ -272,7 +274,8 @@ export default {
       }
     },
     upload() {
-      if (this.username != '' && this.province != '' &&  this.street != '' && this.storename != '' && this.disdetail != '') {
+      this.isloading = true
+      if (this.username != '' && this.province != '' &&  this.street != '' && this.storename != '') {
         this.updata.append('username', this.username)
         this.updata.append('storename', this.storename)
         this.updata.append('province', this.province)
@@ -295,12 +298,17 @@ export default {
           if (res.data != "请重新登陆") {
             alert("上传成功")
             location.reload()
+            this.isloading = false
           } else if(res.data == "请重新登陆"){
             alert("请重新登陆")
             location.reload()
+            this.isloading = false
             this.islogin = false
           }
         })
+      }else{
+        alert("信息不完整")
+        this.isloading = false
       }
     }
   },

@@ -43,7 +43,7 @@ name: "Map",
 
       this.center = map.getCenter()
 
-      var citySearch = new AMap.CitySearch()
+      let citySearch = new AMap.CitySearch()
         citySearch.getLocalCity( (status, result) =>{
           if (status === 'complete' && result.info === 'OK') {
             console.log(result);
@@ -55,8 +55,6 @@ name: "Map",
     }).catch(e => {
       console.log(e);
     })
-
-
   },
 }
 </script>
